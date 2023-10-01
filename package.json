@@ -1,0 +1,19 @@
+{
+  "name": "ytdwn",
+  "module": "src/index.ts",
+  "type": "module",
+  "devDependencies": {
+    "bun-types": "latest"
+  },
+  "peerDependencies": {
+    "typescript": "^5.0.0"
+  },
+  "dependencies": {
+    "elysia": "^0.7.15",
+    "youtubei.js": "^6.4.0"
+  },
+  "scripts": {
+     "dev" : "bun run --hot src/index.ts",
+     "start" : "bun run src/index.ts"
+  }
+}
