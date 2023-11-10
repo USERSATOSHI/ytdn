@@ -21,6 +21,7 @@ app.get("/", async ({ query: {url} }) => {
         },
     });
 })
+//@ts-ignore
 .post("/", async ({ body: {url} }) => {
     if(!url) return "No url provided";
     const id = getId(url as string);
