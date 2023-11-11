@@ -1,0 +1,14 @@
+run = ["bash", "run.sh"]
+
+[env]
+BUN_TMPDIR="/home/runner/.bun/install/tmp"
+
+entrypoint = "entrypoint.sh"
+
+
+
+[languages.typescript]
+pattern = "**/{*.ts,*.tsx}"
+
+[languages.typescript.languageServer]
+start = [ "typescript-language-server", "--stdio" ]
