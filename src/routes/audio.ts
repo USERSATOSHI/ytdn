@@ -8,6 +8,7 @@ const app = new Elysia({
 app.get("/", async ({ query: {url} }) => {
     if(!url) return "No url provided";
     const id = getId(url);
+    const info = await yt.getBasicInfo(id);
     const stream = await yt.download(id, {
         client: "WEB",
         quality: "best",
@@ -17,7 +18,9 @@ app.get("/", async ({ query: {url} }) => {
     return new Response(stream, {
         headers: {
             "Content-Type": "audio/mp3",
-            "Content-Disposition": `attachment; filename="${id}.mp3"`,
+            "Content-Disposition": `attachment; filename="${info.basic_info.title
+                ?.replaceAll('"', "'")
+                .replaceAll("/", "-")}.mp3"`,
         },
     });
 })

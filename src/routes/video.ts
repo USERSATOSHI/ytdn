@@ -14,6 +14,7 @@ app.get("/", async ({ query: { url } }) => {
     if (!url) return "No url provided";
     const id = getId(url);
     try {
+        const info = await yt.getBasicInfo(id);
         const videostream = await yt.download(id, {
             type: "video",
             quality: "best",
@@ -41,8 +42,18 @@ app.get("/", async ({ query: { url } }) => {
                 .input(`./temp/${id}.mp4`)
                 .input(`./temp/${id}.mp3`)
                 .outputOptions(["-c:v copy", "-c:a aac"])
+                // add metaData
+                .outputOptions([
+                    `-metadata`,
+                    `title="${info.basic_info.title
+                        ?.replaceAll('"', "'")
+                        .replaceAll("/", "-")}"`,
+                    `-metadata`,
+                    `thumbnail="${info.basic_info.thumbnail?.[0].url}"`,
+                ])
                 .format("mp4")
                 .output(`./temp/output_${id}.mp4`)
+
                 .on("end", function () {
                     // console.log("Finished processing");
 
@@ -74,10 +85,10 @@ app.get("/", async ({ query: { url } }) => {
                     const res = new Response(rS, {
                         headers: {
                             "Content-Type": "video/mp4",
-                            "Content-Disposition": `attachment; filename="${id}.mp4"`,
-                            ID: id,
+                            "Content-Disposition": `attachment; filename="${info.basic_info.title
+                                ?.replaceAll('"', "'")
+                                .replaceAll("/", "-")}.mp4"`,
                         },
-                        statusText: id,
                     });
 
                     resolve(res);
@@ -93,22 +104,22 @@ app.get("/", async ({ query: { url } }) => {
         return "Error";
     }
 })
-//@ts-ignore
-.post("/", async ({ body: { url } }) => {
-    if (!url) return "No url provided";
-    const id = getId(url as string);
-    const stream = await yt.download(id, {
-        client: "WEB",
-        quality: "best",
-        type: "video+audio",
-    });
+    //@ts-ignore
+    .post("/", async ({ body: { url } }) => {
+        if (!url) return "No url provided";
+        const id = getId(url as string);
+        const stream = await yt.download(id, {
+            client: "WEB",
+            quality: "best",
+            type: "video+audio",
+        });
 
-    return new Response(stream, {
-        headers: {
-            "Content-Type": "video/mp4",
-            "Content-Disposition": `attachment; filename="${id}.mp4"`,
-        },
+        return new Response(stream, {
+            headers: {
+                "Content-Type": "video/mp4",
+                "Content-Disposition": `attachment; filename="${id}.mp4"`,
+            },
+        });
     });
-});
 
 export default app;
