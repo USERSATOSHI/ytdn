@@ -4,4 +4,5 @@ COPY package.json ./
 COPY bun.lockb ./
 COPY src ./
 
-RUN bun run start
+RUN bun install
+RUN bun run src/index.ts
