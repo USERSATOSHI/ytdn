@@ -5,5 +5,6 @@ COPY bun.lockb ./
 COPY src ./
 
 RUN bun install
-WORKDIR "/src"
-RUN bun run index.ts
+ENV NODE_ENV production
+
+CMD [ "bun", "start" ]
