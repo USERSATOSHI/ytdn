@@ -5,4 +5,5 @@ COPY bun.lockb ./
 COPY src ./
 
 RUN bun install
-RUN bun run src/index.ts
+WORKDIR "/src"
+RUN bun run index.ts
