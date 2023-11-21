@@ -18,7 +18,22 @@ app.get("/video", async ({ query: { url } }) => {
         const id = getId(url);
         const playlistInfo = await yt.getPlaylist(id);
         const videos = playlistInfo.videos;
-        if (existsSync(`./temp/${id}`)) {
+
+	if( existsSync(`./temp/${id}.tar.gz`) ) {
+		const reader = Bun.file(`./temp/${id}.tar.gz`)
+                        .stream();
+
+		 	     
+                     return (  new Response(reader, {
+                            headers: {
+                                "Content-Type": "application/x-gzip",
+                                "Content-Disposition": `attachment; filename="${id}.tar.gz"`,
+                            },
+                        }),
+                    );
+
+	}
+	else if (existsSync(`./temp/${id}`)) {
             const tarr = tar.c(
                 {
                     gzip: true,
