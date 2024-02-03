@@ -22,10 +22,8 @@ app.get(
     /search - Search videos - /search?query=search_query
     /search/html - Search videos (html) - /search/html?query=search_query
 
-    /playlist/video - Download playlist videos - /playlist/video?url=playlist_url
-    /playlist/info - Get playlist info - /playlist/info?url=playlist_url
-    /playlist/audio - Download playlist audios - /playlist/audio?url=playlist_url
-    
+    github: https://github.com/usersatoshi/ytdn
+    cli: https://github.com/usersatoshi/ytdn-cli
 `,
 )
     .use(video)
@@ -34,4 +32,6 @@ app.get(
     .use(search)
     .use(playlist)
     .listen(3000, () => console.log("Listening on port 3000"));
+
+
 
