@@ -43,14 +43,14 @@ app.get("/", async ({ query: { url } }) => {
                 .input(`./temp/${id}.mp3`)
                 .outputOptions(["-c:v copy", "-c:a aac"])
                 // add metaData
-                .outputOptions([
-                    `-metadata`,
-                    `title="${info.basic_info.title
-                        ?.replaceAll('"', "'")
-                        .replaceAll("/", "-")}"`,
-                    `-metadata`,
-                    `thumbnail="${info.basic_info.thumbnail?.[0].url}"`,
-                ])
+                // .outputOptions([
+                //     `-metadata`,
+                //     `title="${info.basic_info.title
+                //         ?.replaceAll('"', "'")
+                //         .replaceAll("/", "-")}"`,
+                //     `-metadata`,
+                //     `thumbnail="${info.basic_info.thumbnail?.[0].url}"`,
+                // ])
                 .format("mp4")
                 .output(`./temp/output_${id}.mp4`)
 
@@ -85,9 +85,9 @@ app.get("/", async ({ query: { url } }) => {
                     const res = new Response(rS, {
                         headers: {
                             "Content-Type": "video/mp4",
-                            "Content-Disposition": `attachment; filename="${info.basic_info.title
+                            "Content-Disposition": `attachment; filename="${encodeURI(info.basic_info.title
                                 ?.replaceAll('"', "'")
-                                .replaceAll("/", "-")}.mp4"`,
+                                .replaceAll("/", "-"))}.mp4"`,
                         },
                     });
 
@@ -123,3 +123,4 @@ app.get("/", async ({ query: { url } }) => {
     });
 
 export default app;
+

@@ -18,9 +18,9 @@ app.get("/", async ({ query: {url} }) => {
     return new Response(stream, {
         headers: {
             "Content-Type": "audio/mp3",
-            "Content-Disposition": `attachment; filename="${info.basic_info.title
-                ?.replaceAll('"', "'")
-                .replaceAll("/", "-")}.mp3"`,
+            "Content-Disposition": `attachment; filename="${encodeURI(info.basic_info.title
+                                                          ?.replaceAll('"', "'")
+                                                          .replaceAll("/", "-"))}.mp3"`,
         },
     });
 })
